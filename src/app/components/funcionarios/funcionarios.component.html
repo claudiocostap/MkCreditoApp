@@ -1,0 +1,27 @@
+<h2>Lista de Funcionários</h2>
+
+<div *ngIf="funcionarios.length > 0">
+  <ul>
+    <li *ngFor="let funcionario of funcionarios">
+      <strong>{{ funcionario.pessoa.nome }}</strong><br />
+      CPF: {{ funcionario.pessoa.cpf }}<br />
+      Cargo: {{ funcionario.cargo }}<br />
+      Salário: R$ {{ funcionario.salario | number:'1.2-2' }}<br />
+      Data de Contratação: {{ funcionario.dataContratacao | date:'dd/MM/yyyy' }}<br />
+      Endereço: {{ funcionario.pessoa.endereco.logradouro }},
+                 {{ funcionario.pessoa.endereco.numero }} -
+                 {{ funcionario.pessoa.endereco.bairro }},
+                 {{ funcionario.pessoa.endereco.cidade }} - {{ funcionario.pessoa.endereco.estado }}<br />
+    </li>
+  </ul>
+</div>
+
+<div *ngIf="funcionarios.length === 0">
+  <p>Nenhum funcionário encontrado.</p>
+</div>
+
+<div *ngIf="totalPages > 1">
+  <button *ngIf="currentPage > 1" (click)="changePage(currentPage - 1)">Página Anterior</button>
+  <span>Página {{ currentPage }} de {{ totalPages }}</span>
+  <button *ngIf="currentPage < totalPages" (click)="changePage(currentPage + 1)">Próxima Página</button>
+</div>

@@ -1,0 +1,16 @@
+/* Estilos para a barra de ferramentas */
+.my-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+}
+
+.p-toolbar {
+  background-color: #42a5f5;  /* Cor de fundo da barra */
+  color: white;  /* Cor do texto */
+}
+
+button {
+  margin-right: 10px;
+}
