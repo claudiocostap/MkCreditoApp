@@ -4,9 +4,10 @@ import { PessoaService } from '../../services/pessoas.service';
 import { PaginatedResponse } from '../../models/paginated-response.model';
 
 @Component({
-  selector: 'app-pessoas',
-  templateUrl: './pessoas.component.html',
-  styleUrls: ['./pessoas.component.css']
+    selector: 'app-pessoas',
+    templateUrl: './pessoas.component.html',
+    styleUrls: ['./pessoas.component.css'],
+    standalone: false
 })
 export class PessoasComponent implements OnInit {
   pessoas: Pessoa[] = [];
