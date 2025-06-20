@@ -1,24 +1,21 @@
-export interface Pageable {
-  pageNumber: number;
-  pageSize: number;
-  sort: {
-    empty: boolean;
-    sorted: boolean;
-    unsorted: boolean;
-  };
-  offset: number;
-  paged: boolean;
-  unpaged: boolean;
-}
-
+// d:\REPO\MkCreditoApp\src\app\models\paginated-response.model.ts
 export interface PaginatedResponse<T> {
   content: T[];
-  pageable: Pageable;
+  pageable: {
+    sort: {
+      empty: boolean;
+      sorted: boolean;
+      unsorted: boolean;
+    };
+    offset: number;
+    pageNumber: number;
+    pageSize: number;
+    paged: boolean;
+    unpaged: boolean;
+  };
   last: boolean;
   totalPages: number;
   totalElements: number;
-  first: boolean;
-  numberOfElements: number;
   size: number;
   number: number;
   sort: {
@@ -26,5 +23,7 @@ export interface PaginatedResponse<T> {
     sorted: boolean;
     unsorted: boolean;
   };
+  first: boolean;
+  numberOfElements: number;
   empty: boolean;
 }

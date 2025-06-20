@@ -1,21 +1,13 @@
-export interface Endereco {
-  logradouro: string;
-  numero: string;
-  complemento?: string;
-  bairro: string;
-  cep: string;
-  cidade: string;
-  estado: string;
-}
+import { Endereco } from './endereco.model';
 
 export interface Pessoa {
-  id?: number; // O ID é opcional, especialmente ao criar uma nova pessoa
+  id?: number; // Opcional, pois o ID será gerado pelo backend
   nome: string;
   cpf: string;
   rg: string;
   email: string;
   celular: string;
-  dataNascimento: string; // Pode ser alterado para o tipo Date se preferir
+  dataNascimento: string; // Formato YYYY-MM-DD
   endereco: Endereco;
   ativo: boolean;
 }

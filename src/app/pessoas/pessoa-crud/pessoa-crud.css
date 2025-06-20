@@ -1,0 +1,30 @@
+/* d:\REPO\MkCreditoApp\src\app\pessoas\pessoa-crud\pessoa-crud.component.css */
+.container { max-width: 900px; margin: 20px auto; padding: 20px; background-color: #f9f9f9; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); }
+h2, h3, h4 { color: #333; margin-bottom: 20px; }
+.pessoa-form { background-color: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08); margin-bottom: 30px; }
+.form-group { margin-bottom: 15px; }
+.form-group label { display: block; margin-bottom: 5px; font-weight: bold; color: #555; }
+.form-control { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+.form-control.is-invalid { border-color: #dc3545; }
+.invalid-feedback { color: #dc3545; font-size: 0.875em; margin-top: 5px; }
+.endereco-group { border: 1px solid #e0e0e0; padding: 15px; border-radius: 8px; margin-top: 20px; margin-bottom: 20px; background-color: #fefefe; }
+.endereco-group h4 { margin-top: 0; margin-bottom: 15px; color: #444; }
+.form-check { margin-top: 15px; margin-bottom: 15px; }
+.form-check-input { margin-right: 8px; }
+.form-actions button { margin-right: 10px; }
+.btn { padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 1em; transition: background-color 0.3s ease; }
+.btn-primary { background-color: #007bff; color: white; }
+.btn-primary:hover { background-color: #0056b3; }
+.btn-secondary { background-color: #6c757d; color: white; }
+.btn-secondary:hover { background-color: #5a6268; }
+.btn-warning { background-color: #ffc107; color: #212529; }
+.btn-warning:hover { background-color: #e0a800; }
+.btn-info { background-color: #17a2b8; color: white; }
+.btn-info:hover { background-color: #138496; }
+.btn-danger { background-color: #dc3545; color: white; }
+.btn-danger:hover { background-color: #c82333; }
+.btn-sm { padding: 5px 10px; font-size: 0.875em; margin-right: 5px; }
+.table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+.table th, .table td { padding: 12px; text-align: left; border-bottom: 1px solid #dee2e6; }
+.table th { background-color: #e9ecef; color: #495057; font-weight: bold; }
+.table tbody tr:hover { background-color: #e2e6ea; }
