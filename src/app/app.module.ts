@@ -12,14 +12,17 @@ import { FormsModule } from '@angular/forms';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
+import { CheckboxModule } from 'primeng/checkbox'; // Importar CheckboxModule
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { PessoasComponent } from './components/pessoas/pessoas.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     ClientesComponent,
-    FuncionariosComponent
+    FuncionariosComponent,
+    PessoasComponent
   ],
   imports: [
     BrowserModule,
@@ -31,7 +34,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     BrowserAnimationsModule,
     TableModule,
     DialogModule,
-    InputTextModule
+    InputTextModule,
+    CheckboxModule // Adicionar CheckboxModule aqui
   ],
   providers: [],
   bootstrap: [AppComponent]

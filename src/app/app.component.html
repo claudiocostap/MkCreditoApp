@@ -1,23 +1,23 @@
-<main class="main">
-  <div class="content">
-    <p-toolbar>
-      <div class="my-toolbar">
-        <button pButton type="button" icon="pi pi-home" label="Home"></button>
-        <button pButton type="button" icon="pi pi-user" label="Profile"></button>
-        <button pButton type="button" icon="pi pi-cog" label="Settings"></button>
-      </div>
-    </p-toolbar>
-
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+  <div class="container-fluid">
+    <a class="navbar-brand" routerLink="/">MkCréditoApp</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/pessoas" routerLinkActive="active">Pessoas</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/clientes" routerLinkActive="active">Clientes (Exemplo)</a>
+        </li>
+        <!-- Adicione outros links de navegação aqui -->
+      </ul>
+    </div>
   </div>
-  <app-funcionarios></app-funcionarios>
-</main>
+</nav>
 
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * The content above * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * is only a placeholder * * * * * * * * * * * -->
-<!-- * * * * * * * * * * and can be replaced.  * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * End of Placeholder  * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-
-<router-outlet />
+<div class="container">
+  <router-outlet></router-outlet> <!-- O Angular carrega os componentes da rota aqui -->
+</div>
