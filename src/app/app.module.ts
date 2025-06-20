@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ButtonModule } from 'primeng/button';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { ClientesComponent } from './components/clientes/clientes.component';
 import { FuncionariosComponent } from './components/funcionarios/funcionarios.component';
 import { ToolbarModule } from 'primeng/toolbar';
@@ -17,27 +17,21 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PessoasComponent } from './components/pessoas/pessoas.component';
 
 
-@NgModule({
-  declarations: [
-    AppComponent,
-    ClientesComponent,
-    FuncionariosComponent,
-    PessoasComponent
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    ButtonModule,
-    ToolbarModule,
-    HttpClientModule,
-    FormsModule,
-    BrowserAnimationsModule,
-    TableModule,
-    DialogModule,
-    InputTextModule,
-    CheckboxModule // Adicionar CheckboxModule aqui
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
-})
+@NgModule({ declarations: [
+        AppComponent,
+        ClientesComponent,
+        FuncionariosComponent,
+        PessoasComponent
+    ],
+    bootstrap: [AppComponent], imports: [BrowserModule,
+        AppRoutingModule,
+        ButtonModule,
+        ToolbarModule,
+        FormsModule,
+        BrowserAnimationsModule,
+        TableModule,
+        DialogModule,
+        InputTextModule,
+        CheckboxModule // Adicionar CheckboxModule aqui
+    ], providers: [provideHttpClient(withInterceptorsFromDi())] })
 export class AppModule { }
