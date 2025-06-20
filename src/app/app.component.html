@@ -1,22 +1,22 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
-  <div class="container-fluid">
-    <a class="navbar-brand" routerLink="/">MkCréditoApp</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/pessoas" routerLinkActive="active">Pessoas</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/clientes" routerLinkActive="active">Clientes (Exemplo)</a>
-        </li>
-        <!-- Adicione outros links de navegação aqui -->
-      </ul>
-    </div>
+<p-toolbar>
+  <div class="p-toolbar-group-start">
+    <p-button label="MkCréditoApp" styleClass="p-button-text p-button-lg" routerLink="/"></p-button>
   </div>
-</nav>
+
+  <div class="p-toolbar-group-center">
+    <!-- Espaço central, se necessário -->
+  </div>
+
+  <div class="p-toolbar-group-end">
+    <p-button label="Pessoas" styleClass="p-button-text" routerLink="/pessoas" routerLinkActive="p-button-outlined"></p-button>
+    <p-button label="Clientes (Exemplo)" styleClass="p-button-text" routerLink="/clientes" routerLinkActive="p-button-outlined"></p-button>
+    <!-- Adicione outros links de navegação aqui, por exemplo:
+    <p-button label="Outro Link" styleClass="p-button-text" routerLink="/outro-link" routerLinkActive="p-button-outlined"></p-button>
+    -->
+    <i class="pi pi-bars p-toolbar-separator" style="margin: 0 0.5rem;"></i>
+    <p-button icon="pi pi-user" styleClass="p-button-rounded p-button-text"></p-button>
+  </div>
+</p-toolbar>
 
 <div class="container">
   <router-outlet></router-outlet> <!-- O Angular carrega os componentes da rota aqui -->
