@@ -1,6 +1,8 @@
 <h2>Lista de Clientes</h2>
 <ul>
-  <li *ngFor="let cliente of clientes">
-    {{ cliente.nome }}
-  </li>
+  @for (cliente of clientes; track cliente) {
+    <li>
+      {{ cliente.nome }}
+    </li>
+  }
 </ul>
