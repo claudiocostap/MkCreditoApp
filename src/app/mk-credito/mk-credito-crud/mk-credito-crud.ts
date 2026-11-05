@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MkCreditoService } from '../../services/mk-credito.service';
 import { MkCredito } from '../../models/mk-credito.model';
@@ -10,7 +10,9 @@ import { PaginatedResponse } from '../../models/paginated-response.model';
   standalone: true,
   imports: [
     CommonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    CurrencyPipe,
+    DatePipe
   ],
   templateUrl: './mk-credito-crud.html',
   styleUrls: ['./mk-credito-crud.css']
@@ -31,7 +33,7 @@ export class MkCreditoCrudComponent implements OnInit {
       id: [null],
       cpf: ['', [Validators.required, Validators.pattern(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/)]],
       valorEntrada: ['', [Validators.required, Validators.min(0)]],
-      valorFinanciado: ['', [Validators.required, Validators.min(0)]],
+      valorFinanciado: ['', [Validators.required, Validators.min(1)]],
       numeroParcelas: ['', [Validators.required, Validators.min(1)]],
       valorParcela: [{value: '', disabled: true}],
       juros: [{value: '', disabled: true}],
@@ -51,7 +53,7 @@ export class MkCreditoCrudComponent implements OnInit {
       },
       error: (error) => {
         console.error('Erro ao carregar análises:', error);
-        this.showErrorMessage('Erro ao carregar a lista de análises. Tente novamente mais tarde.');
+        this.showErrorMessage('Erro ao carregar a lista de análises.');
       }
     });
   }
@@ -87,15 +89,14 @@ export class MkCreditoCrudComponent implements OnInit {
 
     operation.subscribe({
       next: () => {
-        const action = isEditing ? 'atualizada' : 'criada';
-        this.showSuccessMessage(`Análise ${action} com sucesso!`);
+        const action = isEditing ? 'atualizada' : 'cadastrada';
+        this.showSuccessMessage(`Análise de crédito ${action} com sucesso!`);
         this.loadAnalises();
         this.newAnalise();
       },
       error: (error) => {
-        const action = isEditing ? 'atualizar' : 'criar';
-        console.error(`Erro ao ${action} análise:`, error);
-        this.showErrorMessage(`Erro ao ${action} a análise. Verifique os dados e tente novamente.`);
+        console.error('Erro na operação:', error);
+        this.showErrorMessage('Erro ao processar a análise. Tente novamente.');
       }
     });
   }
@@ -107,12 +108,12 @@ export class MkCreditoCrudComponent implements OnInit {
           this.showSuccessMessage('Análise excluída com sucesso.');
           this.loadAnalises();
           if (this.selectedAnaliseId === id) {
-             this.newAnalise();
+            this.newAnalise();
           }
         },
         error: (error) => {
           console.error('Erro ao excluir análise:', error);
-          this.showErrorMessage('Erro ao excluir a análise. Tente novamente.');
+          this.showErrorMessage('Erro ao excluir a análise.');
         }
       });
     }
@@ -120,6 +121,16 @@ export class MkCreditoCrudComponent implements OnInit {
 
   cancelEdit(): void {
     this.newAnalise();
+  }
+
+  clearMessages(): void {
+    this.successMessage = null;
+    this.errorMessage = null;
+  }
+
+  isInvalid(controlName: string): boolean {
+    const control = this.analiseForm.get(controlName);
+    return !!control && control.invalid && (control.touched || control.dirty);
   }
 
   private markFormGroupTouched(formGroup: FormGroup) {
@@ -131,20 +142,10 @@ export class MkCreditoCrudComponent implements OnInit {
     });
   }
 
-  isInvalid(controlName: string): boolean {
-    const control = this.analiseForm.get(controlName);
-    return !!control && control.invalid && (control.touched || control.dirty);
-  }
-
-  private clearMessages(): void {
-    this.successMessage = null;
-    this.errorMessage = null;
-  }
-
   private showSuccessMessage(message: string): void {
     this.clearMessages();
     this.successMessage = message;
-    setTimeout(() => this.successMessage = null, 5000);
+    setTimeout(() => this.successMessage = null, 4000);
   }
 
   private showErrorMessage(message: string): void {

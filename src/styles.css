@@ -1,12 +1,21 @@
-/* You can add global styles to this file, and also import other style files */
-.navbar {
-  background-color: #f8f9fa;
-  padding: 1rem;
-  border-bottom: 1px solid #e7e7e7;
+/* Import Bootstrap e Bootstrap Icons */
+@import 'bootstrap/dist/css/bootstrap.min.css';
+@import 'bootstrap-icons/font/bootstrap-icons.css';
+
+:root {
+  --primary-color: #0d6efd;
 }
 
-.navbar a {
-  margin-right: 1rem;
-  text-decoration: none;
+body {
+  background-color: #f4f6f9;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   color: #333;
+}
+
+.card {
+  border-radius: 0.75rem;
+}
+
+.btn {
+  border-radius: 0.5rem;
 }
