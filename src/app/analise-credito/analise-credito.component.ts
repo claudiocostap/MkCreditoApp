@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MkCreditoService } from '../../services/mk-credito.service';
-import { MkCredito } from '../../models/mk-credito.model';
-import { PaginatedResponse } from '../../models/paginated-response.model';
+import { MkCreditoService } from '../services/mk-credito.service';
+import { MkCredito } from '../models/mk-credito.model';
+import { PaginatedResponse } from '../models/paginated-response.model';
 
 @Component({
-  selector: 'app-mk-credito-crud',
+  selector: 'app-analise-credito',
   standalone: true,
   imports: [
     CommonModule,
@@ -14,10 +14,10 @@ import { PaginatedResponse } from '../../models/paginated-response.model';
     CurrencyPipe,
     DatePipe
   ],
-  templateUrl: './mk-credito-crud.html',
-  styleUrls: ['./mk-credito-crud.css']
+  templateUrl: './analise-credito.component.html',
+  styleUrls: ['./analise-credito.component.css']
 })
-export class MkCreditoCrudComponent implements OnInit {
+export class AnaliseCreditoComponent implements OnInit {
   analises: MkCredito[] = [];
   analiseForm: FormGroup;
   isEditing: boolean = false;
@@ -153,3 +153,4 @@ export class MkCreditoCrudComponent implements OnInit {
     this.errorMessage = message;
   }
 }
+

@@ -1,23 +1,22 @@
-// d:\REPO\MkCreditoApp\src\app\pessoas\pessoa-crud\pessoa-crud.component.ts
 import { Component, OnInit } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { PessoaService } from '../../services/pessoas.service';
-import { Pessoa } from '../../models/pessoa.model';
-import { PaginatedResponse } from '../../models/paginated-response.model';
+import { PessoaService } from '../services/pessoas.service';
+import { Pessoa } from '../models/pessoa.model';
+import { PaginatedResponse } from '../models/paginated-response.model';
 
 @Component({
-  selector: 'app-pessoa-crud',
+  selector: 'app-cliente',
   standalone: true,
   imports: [
     CommonModule,
     ReactiveFormsModule,
     DatePipe
   ],
-  templateUrl: './pessoa-crud.html',
-  styleUrls: ['./pessoa-crud.css']
+  templateUrl: './cliente.component.html',
+  styleUrls: ['./cliente.component.css']
 })
-export class PessoaCrudComponent implements OnInit {
+export class ClienteComponent implements OnInit {
   pessoas: Pessoa[] = [];
   pessoaForm: FormGroup;
   isEditing: boolean = false;
@@ -165,3 +164,4 @@ export class PessoaCrudComponent implements OnInit {
     this.errorMessage = message;
   }
 }
+
