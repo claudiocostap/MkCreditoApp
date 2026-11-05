@@ -1,0 +1,220 @@
+<div class="row g-4">
+  <!-- Cabeçalho da Página -->
+  <div class="col-12 d-flex justify-content-between align-items-center pb-2 border-bottom">
+    <div>
+      <h2 class="h3 fw-bold text-dark mb-1">
+        <i class="bi bi-file-earmark-spreadsheet text-primary me-2"></i>Gestão de Análises de Crédito
+      </h2>
+      <p class="text-muted mb-0">Simulação, avaliação cadastral e acompanhamento de propostas de crédito.</p>
+    </div>
+    <button class="btn btn-primary d-flex align-items-center gap-2 shadow-sm" (click)="newAnalise()">
+      <i class="bi bi-plus-circle"></i>
+      <span>Nova Simulação</span>
+    </button>
+  </div>
+
+  <!-- Alertas de Feedback -->
+  <div class="col-12" *ngIf="successMessage">
+    <div class="alert alert-success alert-dismissible fade show d-flex align-items-center" role="alert">
+      <i class="bi bi-check-circle-fill fs-5 me-2"></i>
+      <div>{{ successMessage }}</div>
+      <button type="button" class="btn-close ms-auto" (click)="clearMessages()" aria-label="Close"></button>
+    </div>
+  </div>
+
+  <div class="col-12" *ngIf="errorMessage">
+    <div class="alert alert-danger alert-dismissible fade show d-flex align-items-center" role="alert">
+      <i class="bi bi-exclamation-triangle-fill fs-5 me-2"></i>
+      <div>{{ errorMessage }}</div>
+      <button type="button" class="btn-close ms-auto" (click)="clearMessages()" aria-label="Close"></button>
+    </div>
+  </div>
+
+  <!-- Formulário de Cadastro / Edição -->
+  <div class="col-lg-5">
+    <div class="card shadow-sm border-0">
+      <div class="card-header bg-white py-3 border-0">
+        <h5 class="card-title mb-0 fw-semibold text-primary d-flex align-items-center gap-2">
+          <i [class]="isEditing ? 'bi bi-pencil-square' : 'bi bi-plus-square'"></i>
+          {{ isEditing ? 'Editar Análise #' + selectedAnaliseId : 'Nova Análise de Crédito' }}
+        </h5>
+      </div>
+      <div class="card-body pt-0">
+        <form [formGroup]="analiseForm" (ngSubmit)="saveAnalise()">
+          <div class="mb-3">
+            <label for="cpf" class="form-label fw-medium">CPF do Cliente</label>
+            <div class="input-group">
+              <span class="input-group-text bg-light text-muted"><i class="bi bi-person-vcard"></i></span>
+              <input type="text" id="cpf" formControlName="cpf" class="form-control"
+                     placeholder="000.000.000-00"
+                     [class.is-invalid]="isInvalid('cpf')">
+            </div>
+            <div *ngIf="isInvalid('cpf')" class="invalid-feedback d-block">
+              Informe um CPF válido no formato 000.000.000-00.
+            </div>
+          </div>
+
+          <div class="row g-2 mb-3">
+            <div class="col-sm-6">
+              <label for="valorEntrada" class="form-label fw-medium">Entrada (R$)</label>
+              <div class="input-group">
+                <span class="input-group-text bg-light text-muted">R$</span>
+                <input type="number" id="valorEntrada" formControlName="valorEntrada" class="form-control"
+                       placeholder="0,00"
+                       [class.is-invalid]="isInvalid('valorEntrada')">
+              </div>
+              <div *ngIf="isInvalid('valorEntrada')" class="invalid-feedback d-block">
+                Valor obrigatório (mín. 0).
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <label for="valorFinanciado" class="form-label fw-medium">Financiamento (R$)</label>
+              <div class="input-group">
+                <span class="input-group-text bg-light text-muted">R$</span>
+                <input type="number" id="valorFinanciado" formControlName="valorFinanciado" class="form-control"
+                       placeholder="0,00"
+                       [class.is-invalid]="isInvalid('valorFinanciado')">
+              </div>
+              <div *ngIf="isInvalid('valorFinanciado')" class="invalid-feedback d-block">
+                Valor obrigatório (mín. 1).
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="numeroParcelas" class="form-label fw-medium">Número de Parcelas</label>
+            <div class="input-group">
+              <span class="input-group-text bg-light text-muted"><i class="bi bi-calendar3"></i></span>
+              <select id="numeroParcelas" formControlName="numeroParcelas" class="form-select"
+                      [class.is-invalid]="isInvalid('numeroParcelas')">
+                <option value="" disabled>Selecione a quantidade de parcelas</option>
+                <option [value]="12">12 meses (1 ano)</option>
+                <option [value]="24">24 meses (2 anos)</option>
+                <option [value]="36">36 meses (3 anos)</option>
+                <option [value]="48">48 meses (4 anos)</option>
+                <option [value]="60">60 meses (5 anos)</option>
+              </select>
+            </div>
+            <div *ngIf="isInvalid('numeroParcelas')" class="invalid-feedback d-block">
+              Selecione o número de parcelas.
+            </div>
+          </div>
+
+          <div class="card bg-light border-0 mb-3" *ngIf="analiseForm.get('valorParcela')?.value || isEditing">
+            <div class="card-body p-3">
+              <div class="d-flex justify-content-between mb-1">
+                <span class="text-muted small">Status Atual:</span>
+                <span class="badge" [ngClass]="{
+                  'bg-success': analiseForm.get('status')?.value === 'Aprovado',
+                  'bg-warning text-dark': analiseForm.get('status')?.value === 'Em Análise',
+                  'bg-danger': analiseForm.get('status')?.value === 'Reprovado'
+                }">{{ analiseForm.get('status')?.value || 'Aguardando' }}</span>
+              </div>
+              <div class="d-flex justify-content-between mb-1" *ngIf="analiseForm.get('valorParcela')?.value">
+                <span class="text-muted small">Estimativa da Parcela:</span>
+                <span class="fw-bold text-primary">{{ analiseForm.get('valorParcela')?.value | currency:'BRL':'symbol':'1.2-2' }}</span>
+              </div>
+              <div class="d-flex justify-content-between" *ngIf="analiseForm.get('juros')?.value">
+                <span class="text-muted small">Taxa de Juros:</span>
+                <span class="text-muted">{{ analiseForm.get('juros')?.value }}% a.m.</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="d-flex gap-2 pt-2 border-top">
+            <button type="submit" class="btn btn-primary flex-grow-1 d-flex justify-content-center align-items-center gap-1"
+                    [disabled]="analiseForm.invalid">
+              <i class="bi bi-check-lg"></i>
+              {{ isEditing ? 'Salvar Alterações' : 'Calcular e Salvar' }}
+            </button>
+            <button *ngIf="isEditing" type="button" class="btn btn-outline-secondary" (click)="cancelEdit()">
+              Cancelar
+            </button>
+            <button *ngIf="!isEditing" type="button" class="btn btn-outline-secondary" (click)="newAnalise()">
+              Limpar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabela de Análises -->
+  <div class="col-lg-7">
+    <div class="card shadow-sm border-0 h-100">
+      <div class="card-header bg-white py-3 border-0 d-flex justify-content-between align-items-center">
+        <h5 class="card-title mb-0 fw-semibold text-secondary">
+          <i class="bi bi-list-ul me-1"></i> Propostas Registradas
+        </h5>
+        <span class="badge bg-secondary-subtle text-secondary border px-2 py-1">
+          Total: {{ analises.length }}
+        </span>
+      </div>
+      <div class="card-body p-0">
+        <div class="table-responsive" *ngIf="analises.length > 0; else emptyState">
+          <table class="table table-hover align-middle mb-0">
+            <thead class="table-light text-muted small text-uppercase">
+              <tr>
+                <th class="ps-3">ID</th>
+                <th>CPF</th>
+                <th>Financiado</th>
+                <th>Parcelas</th>
+                <th>Status</th>
+                <th class="text-end pe-3">Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of analises">
+                <td class="ps-3 fw-medium text-muted">#{{ item.id }}</td>
+                <td>
+                  <span class="fw-semibold text-dark">{{ item.cpf }}</span>
+                  <div class="text-muted small">{{ item.dataAnalise | date:'dd/MM/yyyy HH:mm' }}</div>
+                </td>
+                <td>
+                  <div class="fw-semibold text-primary">{{ item.valorFinanciado | currency:'BRL':'symbol':'1.2-2' }}</div>
+                  <div class="text-muted small">Entrada: {{ item.valorEntrada | currency:'BRL':'symbol':'1.2-2' }}</div>
+                </td>
+                <td>
+                  <span class="fw-medium">{{ item.numeroParcelas }}x</span>
+                  <span class="text-muted small" *ngIf="item.valorParcela"> de {{ item.valorParcela | currency:'BRL':'symbol':'1.2-2' }}</span>
+                </td>
+                <td>
+                  <span class="badge" [ngClass]="{
+                    'bg-success': item.status === 'Aprovado',
+                    'bg-warning text-dark': item.status === 'Em Análise',
+                    'bg-danger': item.status === 'Reprovado'
+                  }">
+                    <i class="bi" [ngClass]="{
+                      'bi-check-circle': item.status === 'Aprovado',
+                      'bi-clock': item.status === 'Em Análise',
+                      'bi-x-circle': item.status === 'Reprovado'
+                    }"></i>
+                    {{ item.status }}
+                  </span>
+                </td>
+                <td class="text-end pe-3">
+                  <div class="btn-group btn-group-sm">
+                    <button class="btn btn-outline-primary" title="Editar" (click)="editAnalise(item)">
+                      <i class="bi bi-pencil"></i>
+                    </button>
+                    <button class="btn btn-outline-danger" title="Excluir" (click)="deleteAnalise(item.id!)">
+                      <i class="bi bi-trash"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <ng-template #emptyState>
+          <div class="text-center py-5">
+            <i class="bi bi-inbox text-muted display-4"></i>
+            <p class="text-muted mt-3 mb-0">Nenhuma análise cadastrada até o momento.</p>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>

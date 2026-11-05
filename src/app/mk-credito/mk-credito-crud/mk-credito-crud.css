@@ -1,0 +1,14 @@
+/* Estilos específicos complementares ao Bootstrap */
+.card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.table th {
+  font-size: 0.8rem;
+  letter-spacing: 0.05rem;
+}
+
+.badge {
+  font-weight: 500;
+  padding: 0.45em 0.7em;
+}

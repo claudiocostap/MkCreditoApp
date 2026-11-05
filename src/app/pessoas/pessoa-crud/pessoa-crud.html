@@ -1,184 +1,283 @@
-<!-- d:\REPO\MkCreditoApp\src\app\pessoas\pessoa-crud\pessoa-crud.component.html -->
-<div class="container">
-  <h2>Cadastro de Pessoas</h2>
-
-  <!-- Mensagens de Sucesso/Erro -->
-  <div *ngIf="successMessage" class="alert alert-success" role="alert">
-    {{ successMessage }}
+<div class="row g-4">
+  <!-- Cabeçalho -->
+  <div class="col-12 d-flex justify-content-between align-items-center pb-2 border-bottom">
+    <div>
+      <h2 class="h3 fw-bold text-dark mb-1">
+        <i class="bi bi-person-lines-fill text-primary me-2"></i>Cadastro de Clientes / Pessoas
+      </h2>
+      <p class="text-muted mb-0">Gerencie informações pessoais, contatos e endereços cadastrados.</p>
+    </div>
+    <button class="btn btn-primary d-flex align-items-center gap-2 shadow-sm" (click)="newPessoa()">
+      <i class="bi bi-person-plus-fill"></i>
+      <span>Novo Cadastro</span>
+    </button>
   </div>
-  <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
-    {{ errorMessage }}
+
+  <!-- Alertas -->
+  <div class="col-12" *ngIf="successMessage">
+    <div class="alert alert-success alert-dismissible fade show d-flex align-items-center" role="alert">
+      <i class="bi bi-check-circle-fill fs-5 me-2"></i>
+      <div>{{ successMessage }}</div>
+      <button type="button" class="btn-close ms-auto" (click)="clearMessages()" aria-label="Close"></button>
+    </div>
   </div>
 
-  <!-- Formulário de Criação/Edição de Pessoa -->
-  <form [formGroup]="pessoaForm" (ngSubmit)="savePessoa()" class="pessoa-form">
-    <h3>{{ isEditing ? 'Editar Pessoa' : 'Nova Pessoa' }}</h3>
-
-    <div class="form-group">
-      <label for="nome">Nome:</label>
-      <input type="text" id="nome" formControlName="nome" class="form-control"
-             [class.is-invalid]="isInvalid('nome')">
-      <div *ngIf="isInvalid('nome')" class="invalid-feedback">
-        Nome é obrigatório.
-      </div>
+  <div class="col-12" *ngIf="errorMessage">
+    <div class="alert alert-danger alert-dismissible fade show d-flex align-items-center" role="alert">
+      <i class="bi bi-exclamation-triangle-fill fs-5 me-2"></i>
+      <div>{{ errorMessage }}</div>
+      <button type="button" class="btn-close ms-auto" (click)="clearMessages()" aria-label="Close"></button>
     </div>
-
-    <div class="form-group">
-      <label for="cpf">CPF:</label>
-      <input type="text" id="cpf" formControlName="cpf" class="form-control"
-             [class.is-invalid]="isInvalid('cpf')">
-      <div *ngIf="isInvalid('cpf')" class="invalid-feedback">
-        CPF é obrigatório e deve ser válido (ex: 123.456.789-00).
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="rg">RG:</label>
-      <input type="text" id="rg" formControlName="rg" class="form-control"
-             [class.is-invalid]="isInvalid('rg')">
-      <div *ngIf="isInvalid('rg')" class="invalid-feedback">
-        RG é obrigatório.
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="email">Email:</label>
-      <input type="email" id="email" formControlName="email" class="form-control"
-             [class.is-invalid]="isInvalid('email')">
-      <div *ngIf="isInvalid('email')" class="invalid-feedback">
-        Email é obrigatório e deve ser válido.
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="celular">Celular:</label>
-      <input type="text" id="celular" formControlName="celular" class="form-control"
-             [class.is-invalid]="isInvalid('celular')">
-      <div *ngIf="isInvalid('celular')" class="invalid-feedback">
-        Celular é obrigatório e deve ter 11 dígitos (ex: 11987654321).
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="dataNascimento">Data de Nascimento:</label>
-      <input type="date" id="dataNascimento" formControlName="dataNascimento" class="form-control"
-             [class.is-invalid]="isInvalid('dataNascimento')">
-      <div *ngIf="isInvalid('dataNascimento')" class="invalid-feedback">
-        Data de Nascimento é obrigatória.
-      </div>
-    </div>
-
-    <!-- Campos de Endereço (FormGroup aninhado) -->
-    <div formGroupName="endereco" class="endereco-group">
-      <h4>Endereço</h4>
-      <div class="form-group">
-        <label for="logradouro">Logradouro:</label>
-        <input type="text" id="logradouro" formControlName="logradouro" class="form-control"
-               [class.is-invalid]="isInvalid('logradouro', enderecoFormGroup)">
-        <div *ngIf="isInvalid('logradouro', enderecoFormGroup)" class="invalid-feedback">
-          Logradouro é obrigatório.
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label for="numero">Número:</label>
-        <input type="text" id="numero" formControlName="numero" class="form-control"
-               [class.is-invalid]="isInvalid('numero', enderecoFormGroup)">
-        <div *ngIf="isInvalid('numero', enderecoFormGroup)" class="invalid-feedback">
-          Número é obrigatório.
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label for="complemento">Complemento:</label>
-        <input type="text" id="complemento" formControlName="complemento" class="form-control">
-      </div>
-
-      <div class="form-group">
-        <label for="bairro">Bairro:</label>
-        <input type="text" id="bairro" formControlName="bairro" class="form-control"
-               [class.is-invalid]="isInvalid('bairro', enderecoFormGroup)">
-        <div *ngIf="isInvalid('bairro', enderecoFormGroup)" class="invalid-feedback">
-          Bairro é obrigatório.
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label for="cep">CEP:</label>
-        <input type="text" id="cep" formControlName="cep" class="form-control"
-               [class.is-invalid]="isInvalid('cep', enderecoFormGroup)">
-        <div *ngIf="isInvalid('cep', enderecoFormGroup)" class="invalid-feedback">
-          CEP é obrigatório e deve ser válido (ex: 12345-678).
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label for="cidade">Cidade:</label>
-        <input type="text" id="cidade" formControlName="cidade" class="form-control"
-               [class.is-invalid]="isInvalid('cidade', enderecoFormGroup)">
-        <div *ngIf="isInvalid('cidade', enderecoFormGroup)" class="invalid-feedback">
-          Cidade é obrigatória.
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label for="estado">Estado (UF):</label>
-        <input type="text" id="estado" formControlName="estado" class="form-control" maxlength="2"
-               [class.is-invalid]="isInvalid('estado', enderecoFormGroup)">
-        <div *ngIf="isInvalid('estado', enderecoFormGroup)" class="invalid-feedback">
-          Estado é obrigatório e deve ter 2 caracteres.
-        </div>
-      </div>
-    </div>
-
-    <div class="form-group form-check">
-      <input type="checkbox" id="ativo" formControlName="ativo" class="form-check-input">
-      <label class="form-check-label" for="ativo">Ativo</label>
-    </div>
-
-    <div class="form-actions">
-      <button type="submit" class="btn btn-primary" [disabled]="pessoaForm.invalid">
-        {{ isEditing ? 'Salvar Alterações' : 'Criar Pessoa' }}
-      </button>
-      <button type="button" class="btn btn-secondary" (click)="newPessoa()">Nova Pessoa</button>
-      <button *ngIf="isEditing" type="button" class="btn btn-warning" (click)="cancelEdit()">Cancelar</button>
-    </div>
-  </form>
-
-  <hr>
-
-  <!-- Lista de Pessoas -->
-  <h3>Lista de Pessoas</h3>
-  <div *ngIf="pessoas.length === 0; else pessoaList">
-    <p>Nenhuma pessoa cadastrada.</p>
   </div>
-  <ng-template #pessoaList>
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Nome</th>
-          <th>CPF</th>
-          <th>Email</th>
-          <th>Celular</th>
-          <th>Ativo</th>
-          <th>Ações</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let pessoa of pessoas">
-          <td>{{ pessoa.id }}</td>
-          <td>{{ pessoa.nome }}</td>
-          <td>{{ pessoa.cpf }}</td>
-          <td>{{ pessoa.email }}</td>
-          <td>{{ pessoa.celular }}</td>
-          <td>{{ pessoa.ativo ? 'Sim' : 'Não' }}</td>
-          <td>
-            <button class="btn btn-info btn-sm" (click)="editPessoa(pessoa)">Editar</button>
-            <button class="btn btn-danger btn-sm" (click)="deletePessoa(pessoa.id!)">Excluir</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </ng-template>
+
+  <!-- Formulário de Pessoa -->
+  <div class="col-lg-5">
+    <div class="card shadow-sm border-0">
+      <div class="card-header bg-white py-3 border-0">
+        <h5 class="card-title mb-0 fw-semibold text-primary d-flex align-items-center gap-2">
+          <i [class]="isEditing ? 'bi bi-pencil-square' : 'bi bi-person-plus'"></i>
+          {{ isEditing ? 'Editar Cliente #' + selectedPessoaId : 'Cadastrar Novo Cliente' }}
+        </h5>
+      </div>
+      <div class="card-body pt-0">
+        <form [formGroup]="pessoaForm" (ngSubmit)="savePessoa()">
+          <!-- Dados Pessoais -->
+          <h6 class="text-uppercase text-secondary fs-7 fw-bold mb-3 border-bottom pb-1">
+            <i class="bi bi-person me-1"></i> Dados Pessoais
+          </h6>
+
+          <div class="mb-3">
+            <label for="nome" class="form-label fw-medium">Nome Completo</label>
+            <input type="text" id="nome" formControlName="nome" class="form-control"
+                   placeholder="Ex: Maria da Silva"
+                   [class.is-invalid]="isInvalid('nome')">
+            <div *ngIf="isInvalid('nome')" class="invalid-feedback">
+              O nome é obrigatório.
+            </div>
+          </div>
+
+          <div class="row g-2 mb-3">
+            <div class="col-sm-6">
+              <label for="cpf" class="form-label fw-medium">CPF</label>
+              <input type="text" id="cpf" formControlName="cpf" class="form-control"
+                     placeholder="000.000.000-00"
+                     [class.is-invalid]="isInvalid('cpf')">
+              <div *ngIf="isInvalid('cpf')" class="invalid-feedback">
+                CPF inválido (000.000.000-00).
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <label for="rg" class="form-label fw-medium">RG</label>
+              <input type="text" id="rg" formControlName="rg" class="form-control"
+                     placeholder="00.000.000-0"
+                     [class.is-invalid]="isInvalid('rg')">
+              <div *ngIf="isInvalid('rg')" class="invalid-feedback">
+                RG é obrigatório.
+              </div>
+            </div>
+          </div>
+
+          <div class="row g-2 mb-3">
+            <div class="col-sm-6">
+              <label for="dataNascimento" class="form-label fw-medium">Data de Nascimento</label>
+              <input type="date" id="dataNascimento" formControlName="dataNascimento" class="form-control"
+                     [class.is-invalid]="isInvalid('dataNascimento')">
+              <div *ngIf="isInvalid('dataNascimento')" class="invalid-feedback">
+                Data obrigatória.
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <label for="celular" class="form-label fw-medium">Celular / WhatsApp</label>
+              <input type="text" id="celular" formControlName="celular" class="form-control"
+                     placeholder="11999998888"
+                     [class.is-invalid]="isInvalid('celular')">
+              <div *ngIf="isInvalid('celular')" class="invalid-feedback">
+                11 dígitos numéricos com DDD.
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="email" class="form-label fw-medium">E-mail</label>
+            <div class="input-group">
+              <span class="input-group-text bg-light text-muted"><i class="bi bi-envelope"></i></span>
+              <input type="email" id="email" formControlName="email" class="form-control"
+                     placeholder="cliente@exemplo.com"
+                     [class.is-invalid]="isInvalid('email')">
+            </div>
+            <div *ngIf="isInvalid('email')" class="invalid-feedback d-block">
+              Informe um e-mail válido.
+            </div>
+          </div>
+
+          <div class="form-check form-switch mb-4">
+            <input class="form-check-input" type="checkbox" id="ativo" formControlName="ativo">
+            <label class="form-check-label fw-medium" for="ativo">Cliente Ativo no Sistema</label>
+          </div>
+
+          <!-- Endereço -->
+          <div formGroupName="endereco">
+            <h6 class="text-uppercase text-secondary fs-7 fw-bold mb-3 border-bottom pb-1">
+              <i class="bi bi-geo-alt me-1"></i> Endereço Residencial
+            </h6>
+
+            <div class="row g-2 mb-3">
+              <div class="col-sm-4">
+                <label for="cep" class="form-label fw-medium">CEP</label>
+                <input type="text" id="cep" formControlName="cep" class="form-control"
+                       placeholder="00000-000"
+                       [class.is-invalid]="isInvalid('cep', enderecoFormGroup)">
+                <div *ngIf="isInvalid('cep', enderecoFormGroup)" class="invalid-feedback">
+                  Formato: 00000-000.
+                </div>
+              </div>
+              <div class="col-sm-8">
+                <label for="logradouro" class="form-label fw-medium">Logradouro / Rua</label>
+                <input type="text" id="logradouro" formControlName="logradouro" class="form-control"
+                       placeholder="Rua, Av, etc."
+                       [class.is-invalid]="isInvalid('logradouro', enderecoFormGroup)">
+                <div *ngIf="isInvalid('logradouro', enderecoFormGroup)" class="invalid-feedback">
+                  Logradouro obrigatório.
+                </div>
+              </div>
+            </div>
+
+            <div class="row g-2 mb-3">
+              <div class="col-sm-4">
+                <label for="numero" class="form-label fw-medium">Número</label>
+                <input type="text" id="numero" formControlName="numero" class="form-control"
+                       placeholder="123"
+                       [class.is-invalid]="isInvalid('numero', enderecoFormGroup)">
+                <div *ngIf="isInvalid('numero', enderecoFormGroup)" class="invalid-feedback">
+                  Número obrigatório.
+                </div>
+              </div>
+              <div class="col-sm-8">
+                <label for="complemento" class="form-label fw-medium">Complemento <span class="text-muted small">(opcional)</span></label>
+                <input type="text" id="complemento" formControlName="complemento" class="form-control"
+                       placeholder="Apto, Bloco, etc.">
+              </div>
+            </div>
+
+            <div class="row g-2 mb-3">
+              <div class="col-sm-5">
+                <label for="bairro" class="form-label fw-medium">Bairro</label>
+                <input type="text" id="bairro" formControlName="bairro" class="form-control"
+                       placeholder="Bairro"
+                       [class.is-invalid]="isInvalid('bairro', enderecoFormGroup)">
+                <div *ngIf="isInvalid('bairro', enderecoFormGroup)" class="invalid-feedback">
+                  Bairro obrigatório.
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <label for="cidade" class="form-label fw-medium">Cidade</label>
+                <input type="text" id="cidade" formControlName="cidade" class="form-control"
+                       placeholder="Cidade"
+                       [class.is-invalid]="isInvalid('cidade', enderecoFormGroup)">
+                <div *ngIf="isInvalid('cidade', enderecoFormGroup)" class="invalid-feedback">
+                  Cidade obrigatória.
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <label for="estado" class="form-label fw-medium">UF</label>
+                <input type="text" id="estado" formControlName="estado" class="form-control text-uppercase"
+                       placeholder="SP" maxlength="2"
+                       [class.is-invalid]="isInvalid('estado', enderecoFormGroup)">
+                <div *ngIf="isInvalid('estado', enderecoFormGroup)" class="invalid-feedback">
+                  UF inválida.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="d-flex gap-2 pt-3 border-top">
+            <button type="submit" class="btn btn-primary flex-grow-1 d-flex justify-content-center align-items-center gap-1"
+                    [disabled]="pessoaForm.invalid">
+              <i class="bi bi-check-lg"></i>
+              {{ isEditing ? 'Atualizar Cadastro' : 'Cadastrar Cliente' }}
+            </button>
+            <button *ngIf="isEditing" type="button" class="btn btn-outline-secondary" (click)="cancelEdit()">
+              Cancelar
+            </button>
+            <button *ngIf="!isEditing" type="button" class="btn btn-outline-secondary" (click)="newPessoa()">
+              Limpar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabela de Clientes -->
+  <div class="col-lg-7">
+    <div class="card shadow-sm border-0 h-100">
+      <div class="card-header bg-white py-3 border-0 d-flex justify-content-between align-items-center">
+        <h5 class="card-title mb-0 fw-semibold text-secondary">
+          <i class="bi bi-people-fill me-1"></i> Base de Clientes
+        </h5>
+        <span class="badge bg-secondary-subtle text-secondary border px-2 py-1">
+          Total: {{ pessoas.length }}
+        </span>
+      </div>
+      <div class="card-body p-0">
+        <div class="table-responsive" *ngIf="pessoas.length > 0; else emptyState">
+          <table class="table table-hover align-middle mb-0">
+            <thead class="table-light text-muted small text-uppercase">
+              <tr>
+                <th class="ps-3">Cliente</th>
+                <th>Documentos</th>
+                <th>Contato</th>
+                <th>Cidade/UF</th>
+                <th>Status</th>
+                <th class="text-end pe-3">Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let p of pessoas">
+                <td class="ps-3">
+                  <div class="fw-semibold text-dark">{{ p.nome }}</div>
+                  <div class="text-muted small">Nasc: {{ p.dataNascimento | date:'dd/MM/yyyy' }}</div>
+                </td>
+                <td>
+                  <div class="small"><span class="text-muted">CPF:</span> {{ p.cpf }}</div>
+                  <div class="small"><span class="text-muted">RG:</span> {{ p.rg }}</div>
+                </td>
+                <td>
+                  <div class="small"><i class="bi bi-telephone text-muted me-1"></i>{{ p.celular }}</div>
+                  <div class="small text-muted"><i class="bi bi-envelope text-muted me-1"></i>{{ p.email }}</div>
+                </td>
+                <td>
+                  <div class="small">{{ p.endereco.cidade }} - {{ p.endereco.estado }}</div>
+                  <div class="text-muted small text-truncate" style="max-width: 130px;">{{ p.endereco.logradouro }}, {{ p.endereco.numero }}</div>
+                </td>
+                <td>
+                  <span class="badge" [ngClass]="p.ativo ? 'bg-success' : 'bg-secondary'">
+                    <i class="bi" [ngClass]="p.ativo ? 'bi-check-circle' : 'bi-dash-circle'"></i>
+                    {{ p.ativo ? 'Ativo' : 'Inativo' }}
+                  </span>
+                </td>
+                <td class="text-end pe-3">
+                  <div class="btn-group btn-group-sm">
+                    <button class="btn btn-outline-primary" title="Editar" (click)="editPessoa(p)">
+                      <i class="bi bi-pencil"></i>
+                    </button>
+                    <button class="btn btn-outline-danger" title="Excluir" (click)="deletePessoa(p.id!)">
+                      <i class="bi bi-trash"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <ng-template #emptyState>
+          <div class="text-center py-5">
+            <i class="bi bi-people text-muted display-4"></i>
+            <p class="text-muted mt-3 mb-0">Nenhum cliente cadastrado até o momento.</p>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
 </div>
